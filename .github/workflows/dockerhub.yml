@@ -2,7 +2,7 @@ name: Push to Docker Hub
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on pushes or merges to the main branch
+  # Triggers the workflow only on pushes or merges to the main branch
   push:
     branches: [ main ]
 
