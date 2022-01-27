@@ -36,4 +36,15 @@ jobs:
       # Linting
       - name: lint server
         run: cd backend && npm run lint
+        
+      # Send slack message to ci/cd channel
+      - name: Notify on slack
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: author,pullRequest,commit
+          text: 'Code review waiting'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
