@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const cors = require('cors')
+
 const {
   importHistory,
   slackChannels,
@@ -63,7 +64,7 @@ app.post('/api/parse', async (req, res) => {
     } else {
       res.json(invalidNumberOfArguments(params.length))
     }
-  } catch (error){
+  } catch (error) {
     res.json(errorResponseObject(error.message))
   }
 })

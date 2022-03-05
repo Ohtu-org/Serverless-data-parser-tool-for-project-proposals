@@ -8,14 +8,17 @@ const savedQueries = {}
 async function saveQuery(res, args) {
   try {
     const id = await importHistory(res, args, true)
+    let user =   args.user ? `user: ${args.user}` : 'user: not given'
+    let channel = `channel: ${args.channel}`
+    let time = args.hours ? `time: ${args.hours} h` : 'time: not given'
     res.json({
       blocks: [
         {
           type: 'section',
           text: {
             type: 'mrkdwn',
-            text: `Your query is ready at : http://135.181.37.120:80/${id}`,
-            //text: `Your query is ready at : http://localhost/api/parse/${id}`,
+            text: `Your query, with parameters: ${user}, ${channel} and ${time} is ready at : http://135.181.37.120:80/${id}`,
+            // text: `Your query is ready at : http://localhost/api/parse/${id}`,
           },
         },
       ],
