@@ -2,15 +2,6 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const cors = require('cors')
-
-const {
-  importHistory,
-  slackChannels,
-  slackUsers,
-  slackGetAllByUser,
-  returnQuery,
-  saveQuery,
-} = require('./controllers/slackController.js')
 const hubspotController = require('./controllers/hubspotController')
 const { parseTimestamp } = require('./utils/parseSlackTimestamp')
 const { parseParameters } = require('./utils/parseParameters')
@@ -30,19 +21,19 @@ app.get('/api/data/:channelId', (req, res) => {
   const oldest = parseTimestamp(Date.now() * 1000, req.body.hours)
   const user = req.body.user
   const args = { channel, user, oldest }
-  importHistory(res, args)
+  slackController.slackMessages(res, args)
 })
 
 app.get('/api/channels', (req, res) => {
-  slackChannels(res)
+  slackController.slackChannels(res)
 })
 
 app.get('/api/users', (req, res) => {
-  slackUsers(res)
+  slackController.slackUsers(res)
 })
 
 app.get('/api/users/:id', (req, res) => {
-  slackGetAllByUser(res, req.params.id)
+  slackController.slackGetAllByUser(res, req.params.id)
 })
 
 app.post('/api/data', (req, res) => {
@@ -51,7 +42,7 @@ app.post('/api/data', (req, res) => {
   const oldest = parseTimestamp(Date.now() * 1000, req.body.hours)
   const user = req.body.user
   const args = { channel, user, oldest }
-  importHistory(res, args)
+  slackController.slackMessages(res, args)
 })
 
 app.post('/api/parse', async (req, res) => {
@@ -60,7 +51,7 @@ app.post('/api/parse', async (req, res) => {
     const params = req.body.text.split(' ').filter(Boolean)
     if (params.length <= 3) {
       const parsedParams = await parseParameters(params, req.body.channel_name)
-      saveQuery(res, parsedParams)
+      slackController.saveQuery(res, parsedParams)
     } else {
       res.json(invalidNumberOfArguments(params.length))
     }
@@ -70,7 +61,7 @@ app.post('/api/parse', async (req, res) => {
 })
 
 app.get('/api/parse/:id', (req, res) => {
-  returnQuery(res, req.params.id)
+  slackController.returnQuery(res, req.params.id)
 })
 
 app.get('/api/hubspot/deals', (req, res) => {

@@ -1,5 +1,4 @@
 const hubspotService = ({ hubspotClient }) => {
-  
   const getAllDeals = async () => {
     const limit = 100
     const after = undefined
@@ -24,16 +23,20 @@ const hubspotService = ({ hubspotClient }) => {
     return result
   }
 
-  const getAllContacts = async () => {    
-    const allContacts = await hubspotClient.crm.contacts.getAll()
-    return allContacts
+  const getAllContacts = async () => {
+    try {
+      const allContacts = await hubspotClient.crm.contacts.getAll()
+      return allContacts
+    } catch (e) {
+      throw new Error(`Error in createAllContacts: ${e.message}`)
+    }
   }
 
   const createDeal = async (dealObject) => {
     try {
       const response = await hubspotClient.crm.deals.basicApi.create(dealObject)
       return response
-    } catch (e){
+    } catch (e) {
       throw new Error(`Error in createDeal: ${e.message}`)
     }
   }
@@ -44,7 +47,7 @@ const hubspotService = ({ hubspotClient }) => {
       const SimplePublicObjectInput = { properties }
       const response = await hubspotClient.crm.deals.basicApi.update(id, SimplePublicObjectInput)
       return response
-    } catch (e){
+    } catch (e) {
       throw new Error(`Error in createDeal: ${e.message}`)
     }
   }
@@ -53,7 +56,7 @@ const hubspotService = ({ hubspotClient }) => {
     getAllDeals,
     getAllContacts,
     createDeal,
-    updateDeal
+    updateDeal,
   })
 }
 module.exports = hubspotService
