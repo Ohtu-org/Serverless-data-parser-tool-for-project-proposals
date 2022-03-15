@@ -28,6 +28,7 @@ const App = () => {
     dispatch(initializeParameters())
   }, [dispatch])
 
+
   return (
     <ThemeProvider theme={theme}>
       <Router>

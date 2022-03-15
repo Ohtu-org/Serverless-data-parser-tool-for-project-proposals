@@ -78,7 +78,6 @@ app.post('/api/messageshortcut', (req, res) => {
   slackController.getAllMessagesFromSingleThread(res, req.body.payload)
 })
 
-
 app.post('/api/sendJSON', (req, res) => {
   // auth, validate, sanitize goes here
   hubspotController.createDeal(res, req.body)

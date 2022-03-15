@@ -100,6 +100,7 @@ async function slackGetAllByUser(res, id) {
 }
 
 async function getParams(res) {
+  
   try {
     const params =  { paramChannel, paramUser, paramHours }
     res.send(params)
