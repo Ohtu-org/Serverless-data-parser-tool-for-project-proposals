@@ -7,18 +7,10 @@ const savedQueries = {}
 const axios = require('axios')
 const baseUrl = 'http://135.181.37.120'
 
-let paramUser = ''
-let paramChannel = 'general'
-let paramHours = ''
-
 function slackResponse (args, id) {
-  const user =   args.user ? `user: ${args.user}` : 'user: not given'
-  const channel = `channel: ${args.channel}`
-  const time = args.hours ? `time: ${args.hours} h` : 'time: not given'
-  paramUser = args.user ? args.user : ''
-  paramChannel = args.channel
-  paramHours = args.hours ? args.hours : ''
-
+  let user =   args.user ? `user: ${args.user}` : 'user: not given'
+  let channel = `channel: ${args.channel}`
+  let time = args.hours ? `time: ${args.hours} h` : 'time: not given'
   return  {
     blocks: [
       {
@@ -141,5 +133,4 @@ module.exports = {
   returnQuery,
   getAllMessagesFromSingleThread,
   slackResponse,
-  getParams,
 }
