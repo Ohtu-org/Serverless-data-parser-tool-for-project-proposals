@@ -39,8 +39,8 @@ jobs:
         uses: codecov/codecov-action@v2
 
       # Linting
-      - name: lint api
-        run: cd api && npm run lint
+      # - name: lint api
+      #   run: cd api && npm run lint
       
       - name: lint front
         run: cd front && npm run lint
