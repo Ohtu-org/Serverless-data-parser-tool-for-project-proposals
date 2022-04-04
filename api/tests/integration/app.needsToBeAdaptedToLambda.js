@@ -1,7 +1,7 @@
-const request = require('supertest')
+/*const request = require('supertest')
 const assert = require('assert')
 
-const app = require('../../app')
+//const app = require('../../app')
 
 jest.mock('@slack/web-api', () => {
   const mock_users = jest.fn()
@@ -258,4 +258,4 @@ describe('Test Hubspot Related Endpoints', () => {
         return done()
       })
   })
-})
+})*/

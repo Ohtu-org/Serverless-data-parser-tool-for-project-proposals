@@ -6,9 +6,9 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches: [ cicd_workflow ]
   pull_request:
-    branches: [ main ]
+    branches: [ cicd_workflow ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -32,15 +32,15 @@ jobs:
 
       # Runs Jest tests, separately in back- and frontend for convenience
       - name: Run the Jest tests
-        run: cd backend && npm run test -- --coverage && cd ../front && npm run test -- --watchAll=false --verbose --coverage
+        run: cd api && npm run test -- --coverage && cd ../front && npm run test -- --watchAll=false --verbose --coverage
       
       # Sends coverage report to Codecov
       - name: Send coverage to Codecov
         uses: codecov/codecov-action@v2
 
       # Linting
-      - name: lint server
-        run: cd backend && npm run lint
+      - name: lint api
+        run: cd api && npm run lint
       
       - name: lint front
         run: cd front && npm run lint

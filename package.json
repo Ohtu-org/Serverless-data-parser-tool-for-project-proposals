@@ -10,12 +10,12 @@
     "jest": "^27.4.7"
   },
   "scripts": {
-    "install": "cd front && npm install && cd .. && cd backend && npm install",
+    "install": "cd front && npm install && cd .. && cd api && npm install",
     "build": "cd front && npm run build && cd .. && cp -r front/build backend",
     "start": "cd backend && npm start",
     "start-front": "cd front && npm start",
     "test": "jest --verbose",
-    "w_test": "cd backend && npm run test && cd .. && cd front && npm run w_test",
+    "w_test": "cd api && npm run test && cd .. && cd front && npm run w_test",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run"
   },

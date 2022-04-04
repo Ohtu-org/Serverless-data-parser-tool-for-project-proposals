@@ -3,74 +3,10 @@ const { slackClient } = require('../services/slackClient')
 const slack = slackService({ slackClient })
 const { processSlackMessages } = require('../application/processSlackMessages')
 const { processMessageShortcut } = require('../application/processMessageShortcut')
-const savedQueries = {}
-const axios = require('axios')
-const baseUrl = 'http://135.181.37.120'
 
 let paramUser = ''
 let paramChannel = 'general'
 let paramHours = ''
-
-/**
- * Function which posts a message to slack and which is only visible to the person who sent the "/parse" command.
- * @param {Object} args JSON object in with fields "user", "channel" and "hours".
- * @param {Number} id Unique id of the query which has the data.
- * @returns a message to slack Channel giving the url to Parsa which has the requested data.
- */
-function slackResponse (args, id) {
-  const user =   args.user ? `user: ${args.user}` : 'user: not given'
-  const channel = `channel: ${args.channel}`
-  const time = args.hours ? `time: ${args.hours} h` : 'time: not given'
-  paramUser = args.user ? args.user : ''
-  paramChannel = args.channel
-  paramHours = args.hours ? args.hours : ''
-
-  return  {
-    blocks: [
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: `Your query, with parameters: ${user}, ${channel} and ${time} is ready at : http://135.181.37.120:80/${id}`,
-        },
-      },
-    ],
-  }
-}
-
-/**
- * Get's the id for the query and passes it to the function which gives the URL.
- * @param {Object} res HTTP Response.
- * @param {Object} args a object which has the arguments used in filtering the messages.
- */
-async function saveQuery(res, args) {
-  try {
-    const id = await slackMessages(res, args, true)
-    res.json(slackResponse(args, id))
-  } catch(error) {
-    console.log(error)
-  }
-}
-
-/**
- * Get's query by id from the global object which stores the queries.
- * @param {Object} res HTTP response.
- * @param {Number} id Id of the query which is wanted.
- */
-async function returnQuery(res, id) {
-  try {
-    if (id in savedQueries) {
-      res.send(savedQueries[id])
-    } else {
-      res.sendStatus(400)
-    }
-  } catch (error) {
-    if (error) {
-      console.error(error)
-      res.sendStatus(500)
-    }
-  }
-}
 
 /**
  * Generates the id for the query and stores it to the global query object.
@@ -83,7 +19,7 @@ async function slackMessages(args) {
     return resultObj
   } catch (error) {
     console.log('error in slackMessages', error)
-    res.send(error.error)
+    return error.error
   }
 }
 
@@ -149,8 +85,8 @@ async function getAllMessagesFromSingleThread(args) {
     const threadWithResponses = await slack.getThreadMessages(args)
     const resultObj = await processMessageShortcut(slack, threadWithResponses)
     return resultObj
-} catch (error) {
-    res.send(error)
+  } catch (error) {
+    return error
   }
 }
 
@@ -159,9 +95,6 @@ module.exports = {
   slackChannels,
   slackUsers,
   slackGetAllByUser,
-  saveQuery,
-  returnQuery,
   getAllMessagesFromSingleThread,
-  slackResponse,
   getParams,
 }
