@@ -2,6 +2,7 @@ const slackController = require('../controllers/slackController')
 const parseReqBody = require('../utils/parseReqBody')
 const { parseTimestamp } = require('../utils/parseSlackTimestamp')
 
+
 /**
  * A function that takes care of requests of type 'POST routes=parseResult' containing a
  * request to parse data with certain parameters.
@@ -10,10 +11,10 @@ const { parseTimestamp } = require('../utils/parseSlackTimestamp')
  * @returns either a response object or an error-message
  */
 module.exports = async function (event) {
-  console.log('Receiving post from Parsa front for parsing.')
+  console.log('Receiving post from Parsa front for parsing.');
   let data = event.body
-  let buff = Buffer.from(data, 'base64')
-  event.body = buff.toString('ascii')
+  let buff = Buffer.from(data, 'base64');
+  event.body = buff.toString('ascii');
   event = parseReqBody(event)
 
   if (event.body.type && event.body.type == 'thread'){
@@ -29,6 +30,11 @@ module.exports = async function (event) {
     
     try {
       const response = await slackController.slackMessages(args)
+      response.query = {
+        channel: event.body.channel ? event.body.channel : undefined,
+        user: event.body.user ? event.body.user : undefined,
+        oldest: event.body.oldest ? event.body.oldest : undefined,
+      }
       return response
     } catch (error) {
       return error.error

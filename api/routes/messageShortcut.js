@@ -9,6 +9,7 @@ const parseShortcutPayload = require('../utils/parseShortcutPayload')
  * @returns an object that informs Slack of that the messageshortcut request was received.
  * Before returning this object, however, it posts an answer to Slack using Axios.
  */
+
 module.exports = async function(event){
   console.log('message shortcut', event)
   event = parseShortcutPayload(event)

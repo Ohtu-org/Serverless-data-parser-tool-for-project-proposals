@@ -7,7 +7,7 @@ const hubspotController = require('../controllers/hubspotController')
  * info on the query to use as a search parameter. 
  * @returns the response from Hubspot or an error.
  */
- module.exports = async function (event) {
+module.exports = async function (event) {
   console.log(event)
   console.log(event.body)
   let data = event.body
@@ -16,10 +16,10 @@ const hubspotController = require('../controllers/hubspotController')
   console.log(reqObj)
 
   try {
-      const result = await hubspotController.searchDeals(reqObj.queryString)
-      return result
+    const result = await hubspotController.searchDeals(reqObj.queryString)
+    return result
   } catch (error) {
-      console.log(error)
-      return {error: error.message}
+    console.log(error)
+    return {error: error.message}
   }
 }
