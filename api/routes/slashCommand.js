@@ -5,6 +5,14 @@ const frontUrl = 'https://main.dtatk8xusyguu.amplifyapp.com/'
 const helpResponse = require('../utils/helpResponse')
 const parseResponse = require('../utils/parseResponse')
 
+/**
+ * A function which takes care of requests of type 'POST route=slashCommand' containing the
+ * request from a slashcommand from Slack, with parameters that the user wishes to use for parsing.
+ * @param {*} event an object passed as parameter to the lambda, that contains info on
+ * the parameters that should be entered into the url
+ * @returns a response object with the answer to Slack, containing an url with the parameters. Or 
+ * an error.
+ */
 module.exports = async (event) => {
   let data = event.body
   let buff = Buffer.from(data, 'base64')

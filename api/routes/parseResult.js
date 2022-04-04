@@ -2,6 +2,13 @@ const slackController = require('../controllers/slackController')
 const parseReqBody = require('../utils/parseReqBody')
 const { parseTimestamp } = require('../utils/parseSlackTimestamp')
 
+/**
+ * A function that takes care of requests of type 'POST routes=parseResult' containing a
+ * request to parse data with certain parameters.
+ * @param {*} event an object passed as a parameter to the lambda-function, containing
+ * info on the data to be parsed and sent as response
+ * @returns either a response object or an error-message
+ */
 module.exports = async function (event) {
   console.log('Receiving post from Parsa front for parsing.')
   let data = event.body
