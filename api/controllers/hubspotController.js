@@ -37,42 +37,19 @@ const getAllContacts = async (res) => {
  * Updates an existing deal in Hubspot.
  * @param {Object} properties includes the fields that will be updated.
  * @param {Number} id dealId number of the deal that will be updated.
- * @returns Json object of the deal.
+ * @returns Deal object.
  */
 const updateDeal = async (properties, id) => {
-  const dealId = id
-  console.log('id type ' , typeof(id))
+  const simplePublicObjectInput = { properties }
+  const dealId = JSON.stringify(id)
   const idProperty = undefined
-  var description = ''
-  Object.keys(properties).forEach((key) => {
-    if (key !== 'Customer' && key !== 'Price') description += `${key}: ${properties[key]}, `
-  })
-  description = description.substring(0,description.length-2)
+  console.log('api controller dealobject ' + JSON.stringify(simplePublicObjectInput))
   try {
-    const price = String(properties.Price || '0').replace(/[^0-9,]+/g, '')
-    const deadline = properties.Deadline ? new Date(properties.Deadline) : undefined
-    const technology = properties.Technology ? String(properties.Technology) : undefined
-    const contact = properties.Contact ?  String(properties.Contact) : undefined
-    const fte = properties.FTEs ? Number(properties.FTEs) : undefined
-    const simplePublicObjectInput = {
-      properties: {
-        dealname: `Deal ${properties.Customer || 'no client'}`,
-        amount: Number(price),
-        description: description,
-        parsa_deadline: deadline,
-        hs_next_step: contact,
-        parsa_technologies: technology,
-        mrr_jan_23: fte
-      },
-    }
-    console.log('api controller dealId ' + dealId)
-    console.log('api controller dealobject ' + JSON.stringify(simplePublicObjectInput))
     const result = await hubspot.updateDeal(dealId, simplePublicObjectInput, idProperty)
     console.log('hubController result ' + JSON.stringify(result))
     return result
   } catch (error) {
-    console.log(error)
-    return 'error' 
+    return {error: error.message}
   }
 }
 

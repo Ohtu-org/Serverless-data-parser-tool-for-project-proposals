@@ -3,6 +3,3 @@ coverage
 .env
 urlFunction/
 .vscode/
-api/lambda.zip
-cypress/screenshots/
-cypress/videos/

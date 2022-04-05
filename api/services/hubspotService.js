@@ -65,11 +65,7 @@ const hubspotService = ({ hubspotClient }) => {
       throw new Error(`Error in createAllContacts: ${e.message}`)
     }
   }
-  /**
-  * Uses Hubspot client to create a new deal with parameters got from the hubspotController.
-  * @param {Object} dealObject includes all the parameters needed to 
-  * @returns created deal if succes or error if deal could not be created. 
-  */
+
   const createDeal = async (dealObject) => {
     try {
       const response = await hubspotClient.crm.deals.basicApi.create(dealObject)
@@ -94,17 +90,16 @@ const hubspotService = ({ hubspotClient }) => {
 
   /**
    * Uses Hubspot client to update the deal with parameters got from the hubspotController. 
-   * Hubspot requires parameteres to be named as dealId, simplePublicObjectInput and idProperty. 
-   * @param {*} dealId id of the deal that is being updated. 
-   * @param {Object} simplePublicObjectInput includes the paramters that are being updated. 
-   * @param {*} idProperty usually undefined, but required by Hubspot. 
-   * @returns Hubspot deal object if deal correctly updated, else error.  
+   * Hubspot client requires parameteres to be named as dealId, simplePublicObjectInput and idProperty. 
+   * @param {*} dealId 
+   * @param {Object} simplePublicObjectInput 
+   * @param {*} idProperty 
+   * @returns Hubspot deal object if deal correctly updated. 
    */
   const updateDeal = async (dealId, simplePublicObjectInput, idProperty) => {
     try {
-      console.log('in api service ')
       const response = await hubspotClient.crm.deals.basicApi.update(dealId, simplePublicObjectInput, idProperty)
-      console.log('api hubspot service result ' , response)
+      console.log('service response ' + JSON.stringify(response))
       return response
     } catch (e) {
       throw new Error(`Error in updateDeal: ${e.message}`)
